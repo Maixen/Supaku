@@ -41,7 +41,12 @@
     .slide .meta{padding:8px}
     .slide h2{margin:0 0 8px 0;font-size:28px}
     .sub{color:var(--muted);margin-bottom:12px}
-    .cover{height:220px;background:#111;border-radius:10px;box-shadow:0 6px 24px rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;color:var(--muted)}
+
+    /* Cover containers use explicit aspect-ratio to avoid stretching/cropping issues */
+    .cover, .slide .cover, .feature .cover {aspect-ratio:16/9;width:100%;height:auto;background:#111;border-radius:10px;overflow:hidden;display:block}
+    .cover img, .card img, .small-card img, .screenshot img, .responsive-img{width:100%;height:100%;object-fit:cover;display:block}
+
+    .cover{box-shadow:0 6px 24px rgba(0,0,0,0.6);color:var(--muted)}
     .carousel .controls{position:absolute;inset:0;pointer-events:none}
     .btn{pointer-events:auto;position:absolute;top:50%;transform:translateY(-50%);background:var(--glass);border:1px solid rgba(255,255,255,0.04);padding:10px;border-radius:12px;cursor:pointer;transition:transform .18s ease, box-shadow .18s ease, background-color .18s ease}
     .btn.left{left:12px}
@@ -63,7 +68,6 @@
     .feature--reverse{grid-template-columns:420px 1fr}
     .feature .meta h3{margin:0 0 6px 0}
     .feature .meta p{margin:0}
-    .feature .cover{height:180px;border-radius:10px;overflow:hidden}
 
     /* studio link under meta */
     .studio-link{display:inline-block;margin-top:6px;padding:6px 10px;border-radius:10px;background:rgba(0,0,0,0.12);color:var(--muted);font-size:13px;text-decoration:none}
@@ -71,7 +75,7 @@
 
     /* small card: occupies one column in the grid */
     .small-card{display:flex;gap:12px;align-items:center;padding:12px;border-radius:12px;background:rgba(0,0,0,0.06);border:1px solid rgba(255,255,255,0.02)}
-    .small-card img{width:140px;height:88px;object-fit:cover;border-radius:8px}
+    .small-card img{width:140px;aspect-ratio:16/9;object-fit:cover;border-radius:8px}
     .small-card .meta{font-size:14px}
 
     /* social buttons */
@@ -82,7 +86,7 @@
     /* grid fallback for games listing page */
     .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-top:6px}
     .card{background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));padding:14px;border-radius:var(--radius);border:1px solid rgba(255,255,255,0.03)}
-    .card img{width:100%;height:140px;object-fit:cover;border-radius:10px}
+    .card img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:10px}
     .card h3{margin:10px 0 6px 0}
     .pill{display:inline-block;padding:6px 8px;border-radius:999px;background:rgba(0,0,0,0.25);color:var(--muted);font-size:13px;position:relative;overflow:visible;transition:transform .14s ease, box-shadow .14s ease}
     .pill::after{content:"";position:absolute;inset:-6px;border-radius:999px;filter:blur(10px);opacity:0;transition:opacity .18s ease}
@@ -99,7 +103,7 @@
     /* detail templates */
     .detail{display:grid;grid-template-columns:1fr 360px;gap:22px}
     .detail .gallery{display:flex;flex-direction:column;gap:12px}
-    .screenshot{height:120px;background:#0b0d10;border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--muted)}
+    .screenshot{aspect-ratio:16/9;background:#0b0d10;border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--muted);overflow:hidden}
     .embed-trailer{width:100%;height:200px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);overflow:hidden}
 
     /* studios */
@@ -115,7 +119,7 @@
       .home-grid{grid-template-columns:1fr}
       .feature{grid-template-columns:1fr}
       .feature--reverse{grid-template-columns:1fr}
-      .feature .cover{height:220px}
+      .cover{aspect-ratio:16/9}
       .dots{bottom:8px}
     }
 
@@ -152,7 +156,12 @@
           </div>
           <div class="dots" id="dots" role="tablist" aria-label="Carousel indicators"></div>
         </div>
-        
+
+        <h1 class="section-title">We are Supaku Interactive</h1>
+        <p class="muted" style="margin-top: -30px;">A publisher that tries to support small indie titels, some you have never seen or heard of!</p>
+        <h3 style="margin-top: -20px;">Transparency</h3>
+        <p class="muted"style="margin-top: -30px;">We want to be as much transparent as we are comfortable with, to see our publisher policy click on for developers!</p>
+
         <!-- Grid: large features span two columns, small cards occupy one column -->
         <div class="home-grid" id="homeGrid"></div>
 
@@ -184,25 +193,40 @@
         <div>
           <h3>What we offer</h3>
           <ul class="muted">
+            <li><b>You keep everything, no revenue share!</b></li>
             <li>Curated listings & publisher brand</li>
-            <li>Social sharing, newsletter spots, short trailer promos</li>
-            <li>Community hub (Discord) & cross-promotions</li>
-            <li>Low entry barrier during pilot</li>
+            <li>Social sharing, youtube game trailers, promotions</li>
+            <li>Community hub (Discord) with events & cross-promotions</li>
+            <li>Low entry barrier especially during pilot</li>
+            <li>Possibility to leave until the game is released (normal or early access)</li>
           </ul>
 
-          <h3 style="margin-top:14px">What we expect</h3>
+          <h3 style="margin-top:14px">Our dependencies</h3>
           <ul class="muted">
-            <li>Working demo for review</li>
-            <li>Regular dev updates (monthly)</li>
+            <li>Working demo for review (this demo does not have to be public) except if otherwise discussed</li>
+            <li>Regular dev updates (min 1 per month)</li>
             <li>Agreement to list Supaku as publisher</li>
+            <li>Game Screenshots, Title, Title Picture and General Information</li>
+            <li>We take absolutely no responsability for your game!</li>
+            <li>No NSFW content!</li>
+            <li>We get to kick you out of the program at any time if we have concerns about you, the game or any other aspect!</li>
           </ul>
         </div>
         <aside style="padding:12px;background:var(--panel);border-radius:12px;border:1px solid rgba(255,255,255,0.03)">
           <strong>Quick overview</strong>
-          <p class="muted" style="font-size:14px">You keep 100% revenue. We offer visibility in exchange for a small marketing commitment (e.g. 1 social post / month).</p>
+          <p class="muted" style="font-size:14px">You keep 100% revenue. We offer visibility in exchange for a small marketing commitment.</p>
+          <strong>You think that you fit?</strong>
           <a class="cta" href="#">Apply (Google Form)</a>
+          <strong>Any Questions</strong>
+          <a class="cta" href="#">* missing</a>
         </aside>
       </div>
+      <h3>Whats the idea behind all of this</h3>
+        <p>The more games we get together, the more players will come to our platform and discover other games. Its basically a rolling stone effect type of studio. Players that like your game come to our platfrom and discover other games and studios. And all of this vise versa!</p>
+        <h3>Well, whats the catch</h3>
+        <p>Short answer, ther is <strong>no</strong> catch!</p>
+        <h3>Ok, how does Supaku Interactive profit from this</h3>
+        <p>We get to build up a huge community and that way support games of our partner studio <strong>MaixenStudios</strong>. We hereby promise though that this studio is treated like any other studio of Supaku Interactive!</p>
     </section>
 
     <!-- GAME DETAIL TEMPLATE -->
@@ -242,16 +266,15 @@
   </main>
 
   <footer>
-    <div class="container muted">© Supaku Interactive — Prototype. Replace assets and edit content in <code>DATA</code> variable at the end of the file before deployment.</div>
+    <div class="container muted">© Supaku Interactive 2025 - All rights reserved. Prototype/Pilot-Phase.</div>
   </footer>
 
   <script>
     /**
-     * Changes:
-     * - All UI text switched to English
-     * - Small cards now show Details first, then Store, then Studio
-     * - Dots indicators included (clickable and keyboard friendly)
-     * - Carousel autoplay + reset behaviour unchanged
+     * Fixes for image display:
+     * - rely on CSS aspect-ratio (16:9) for all covers / cards / screenshots
+     * - use classes (responsive-img / thumb-img via CSS) and remove inline height overrides
+     * - small cards show Details first (already implemented) and thumbnails use aspect-ratio
      */
 
     const AUTOPLAY_DELAY = 5000; // ms
@@ -264,7 +287,7 @@
       ],
       studios: [
         { id:'maixenstudios', name:'MaixenStudios', desc:'Small indie studio focusing on creating unique experiences.', long_desc: 'We are a small indie studio founded in 202 by Maixen. After creating a lot of small demos, projects and game jam games we made our first big commercial project: Isoforge', twitter: '', website: '', discord: 'https://discord.gg/zDrCbxwQhD', youtube: 'https://www.youtube.com/@maixenstudios' },
-        { id:'deafult', name:'Your Studios', desc:'This could be your Studio!', long_desc: 'This could be your Studio!.', twitter: '', website: 'https://google.com', youtube: 'https://youtube.com/' }
+        { id:'deafault', name:'Your Studios', desc:'This could be your Studio!', long_desc: 'This could be your Studio!.', twitter: '', website: 'https://google.com', youtube: 'https://youtube.com/' }
       ]
     }
 
@@ -328,7 +351,7 @@
               <a class="studio-link" href="#" data-studio="${g.studio}">Studio</a>
             </div>
           </div>
-          <div class="cover"><img
+          <div class="cover"><img class="responsive-img"
             src="${p.medium}"
             srcset="${p.medium} 800w, ${p.large} 1600w"
             sizes="(max-width:1100px) 100vw, 420px"
@@ -353,7 +376,7 @@
         const p = pathsFor(g.cover);
         if(g.layout === 'small'){
           const sc = document.createElement('div'); sc.className='small-card fade-in';
-          sc.innerHTML = `<img src="${p.thumb}" loading="lazy" decoding="async" alt="${g.title}"><div class="meta"><strong>${g.title}</strong><div class="muted">${g.sub}</div><div style="margin-top:6px"><a class="pill" href="#" data-game="${g.id}">Details</a> <a class="pill" href="${g.store||'#'}" target="_blank">Store</a> <a class="studio-link" href="#" data-studio="${g.studio}">Studio</a></div></div>`;
+          sc.innerHTML = `<img class="thumb-img" src="${p.thumb}" loading="lazy" decoding="async" alt="${g.title}"><div class="meta"><strong>${g.title}</strong><div class="muted">${g.sub}</div><div style="margin-top:6px"><a class="pill" href="#" data-game="${g.id}">Details</a> <a class="pill" href="${g.store||'#'}" target="_blank">Store</a> <a class="studio-link" href="#" data-studio="${g.studio}">Studio</a></div></div>`;
           homeGrid.appendChild(sc);
           return;
         }
@@ -364,7 +387,7 @@
         if(side === 'right') feature.classList.add('feature--reverse');
         feature.innerHTML = `
           <div class="meta"><h3>${g.title}</h3><div class="muted">${g.sub}</div><p class="muted" style="margin-top:8px">${g.desc}</p><div style="margin-top:12px"><a class="cta" href="#" data-game="${g.id}">Details</a> <a class="pill" href="${g.store||'#'}" target="_blank">Store</a> <a class="studio-link" href="#" data-studio="${g.studio}">Studio</a></div></div>
-          <div class="cover"><img src="${p.medium}" srcset="${p.medium} 800w, ${p.large} 1600w" sizes="(max-width:1100px) 100vw, 420px" loading="lazy" decoding="async" alt="${g.title}"></div>
+          <div class="cover"><img class="responsive-img" src="${p.medium}" srcset="${p.medium} 800w, ${p.large} 1600w" sizes="(max-width:1100px) 100vw, 420px" loading="lazy" decoding="async" alt="${g.title}"></div>
         `;
         homeGrid.appendChild(feature);
         autoSide = (autoSide === 'left') ? 'right' : 'left';
@@ -374,7 +397,7 @@
       DATA.games.forEach(g=>{
         const p = pathsFor(g.cover);
         const card = document.createElement('article'); card.className='card fade-in';
-        card.innerHTML = `<img src="${p.medium}" srcset="${p.medium} 800w, ${p.large} 1600w" sizes="(max-width:1100px) 100vw, 420px" loading="lazy" decoding="async" alt="${g.title}"><h3>${g.title}</h3><div class="sub">${g.sub}</div><div style="margin-top:8px"><a class="cta" href="#" data-game="${g.id}">Details</a> <a class="pill" href="${g.store||'#'}" target="_blank">Store</a></div>`;
+        card.innerHTML = `<img class="responsive-img" src="${p.medium}" srcset="${p.medium} 800w, ${p.large} 1600w" sizes="(max-width:1100px) 100vw, 420px" loading="lazy" decoding="async" alt="${g.title}"><h3>${g.title}</h3><div class="sub">${g.sub}</div><div style="margin-top:8px"><a class="cta" href="#" data-game="${g.id}">Details</a> <a class="pill" href="${g.store||'#'}" target="_blank">Store</a></div>`;
         gamesGrid.appendChild(card);
       })
 
@@ -466,9 +489,9 @@
       }
 
       const p = pathsFor(game.cover);
-      document.getElementById('g-cover').innerHTML = `<img src="${p.large}" srcset="${p.medium} 800w, ${p.large} 1600w" sizes="(max-width:1100px) 100vw, 420px" style="width:100%;height:100%;object-fit:cover;border-radius:8px" loading="lazy" decoding="async" alt="${game.title}">`;
+      document.getElementById('g-cover').innerHTML = `<img class="responsive-img" src="${p.large}" srcset="${p.medium} 800w, ${p.large} 1600w" sizes="(max-width:1100px) 100vw, 420px" alt="${game.title}">`;
       const ss = document.getElementById('g-screens'); ss.innerHTML='';
-      (game.screenshots||[]).forEach(s=>{ const sp = pathsFor(s); const d=document.createElement('div'); d.className='screenshot'; d.innerHTML = `<img src="${sp.medium}" srcset="${sp.medium} 800w, ${sp.large} 1600w" sizes="(max-width:1100px) 100vw, 320px" style="width:100%;height:100%;object-fit:cover;border-radius:8px" loading="lazy" decoding="async" alt="${game.title}">`; ss.appendChild(d); });
+      (game.screenshots||[]).forEach(s=>{ const sp = pathsFor(s); const d=document.createElement('div'); d.className='screenshot'; d.innerHTML = `<img class="responsive-img" src="${sp.medium}" srcset="${sp.medium} 800w, ${sp.large} 1600w" sizes="(max-width:1100px) 100vw, 320px" alt="${game.title}">`; ss.appendChild(d); });
       document.getElementById('g-trailer').innerHTML = game.trailer? `<iframe src="${game.trailer}" frameborder="0" style="width:100%;height:100%"></iframe>` : '<span class="muted" style="padding:14px;display:block">No trailer available</span>';
 
       // attach studio link listener inside detail
@@ -499,7 +522,7 @@
       games.forEach(g=>{
         const p = pathsFor(g.cover);
         const box = document.createElement('div'); box.className='card'; box.style.padding='8px';
-        box.innerHTML = `<img src="${p.thumb}" style="height:80px;width:100%;object-fit:cover;border-radius:8px" loading="lazy" decoding="async" alt="${g.title}"><h4 style="margin:8px 0 0 0">${g.title}</h4><div class="muted" style="font-size:13px">${g.sub}</div><div style="margin-top:8px"><a class="pill" href="#" data-game="${g.id}">Details</a> <a class="pill" href="${g.store||'#'}" target="_blank">Store</a></div>`;
+        box.innerHTML = `<img class="thumb-img" src="${p.thumb}" loading="lazy" decoding="async" alt="${g.title}"><h4 style="margin:8px 0 0 0">${g.title}</h4><div class="muted" style="font-size:13px">${g.sub}</div><div style="margin-top:8px"><a class="pill" href="#" data-game="${g.id}">Details</a> <a class="pill" href="${g.store||'#'}" target="_blank">Store</a></div>`;
         sg.appendChild(box);
       });
 
