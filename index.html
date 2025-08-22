@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="de">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -49,6 +49,12 @@
     .btn:hover{transform:translateY(-52%) scale(1.04);box-shadow:0 8px 30px rgba(0,255,209,0.12),0 0 24px rgba(155,107,255,0.06)}
     .btn:active{transform:translateY(-50%) scale(0.98)}
 
+    /* dots indicators */
+    .dots{position:absolute;left:50%;transform:translateX(-50%);bottom:12px;display:flex;gap:8px;z-index:20}
+    .dot{width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.04);cursor:pointer;transition:transform .18s cubic-bezier(.2,.9,.2,1),box-shadow .18s ease,background .18s ease}
+    .dot[aria-current="true"]{background:linear-gradient(90deg,var(--accent),var(--accent-2));box-shadow:0 8px 30px rgba(0,255,209,0.12),0 0 24px rgba(155,107,255,0.08);transform:scale(1.18)}
+    .dot:focus{outline:2px solid rgba(0,255,209,0.12);outline-offset:4px}
+
     /* home grid: two-column layout where items can span both columns */
     .home-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:18px;align-items:start}
 
@@ -59,10 +65,19 @@
     .feature .meta p{margin:0}
     .feature .cover{height:180px;border-radius:10px;overflow:hidden}
 
+    /* studio link under meta */
+    .studio-link{display:inline-block;margin-top:6px;padding:6px 10px;border-radius:10px;background:rgba(0,0,0,0.12);color:var(--muted);font-size:13px;text-decoration:none}
+    .studio-link:hover{color:var(--accent);transform:translateY(-3px)}
+
     /* small card: occupies one column in the grid */
     .small-card{display:flex;gap:12px;align-items:center;padding:12px;border-radius:12px;background:rgba(0,0,0,0.06);border:1px solid rgba(255,255,255,0.02)}
     .small-card img{width:140px;height:88px;object-fit:cover;border-radius:8px}
     .small-card .meta{font-size:14px}
+
+    /* social buttons */
+    .socials{display:flex;gap:8px;margin-top:8px}
+    .social-btn{padding:8px 10px;border-radius:10px;background:rgba(255,255,255,0.03);color:var(--muted);font-weight:600;text-decoration:none;transition:transform .14s ease,box-shadow .14s ease}
+    .social-btn:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,255,209,0.06)}
 
     /* grid fallback for games listing page */
     .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-top:6px}
@@ -101,6 +116,7 @@
       .feature{grid-template-columns:1fr}
       .feature--reverse{grid-template-columns:1fr}
       .feature .cover{height:220px}
+      .dots{bottom:8px}
     }
 
     /* footer */
@@ -115,7 +131,7 @@
       <div class="brand"><span class="accent">Supaku</span> Interactive</div>
       <nav>
         <a href="#" data-page="home" class="active">Home</a>
-        <a href="#" data-page="games">Spiele</a>
+        <a href="#" data-page="games">Games</a>
         <a href="#" data-page="studios">Studios</a>
         <a href="#" data-page="about">About</a>
         <a href="#" data-page="devs">For Developers</a>
@@ -128,14 +144,15 @@
     <!-- HOME -->
     <section id="home" data-section>
       <div class="hero">
-        <div class="carousel">
+        <div class="carousel" id="carousel">
           <div class="slides" id="slides"></div>
           <div class="controls">
-            <button class="btn left" id="prev">◀</button>
-            <button class="btn right" id="next">▶</button>
+            <button class="btn left" id="prev" aria-label="Previous">◀</button>
+            <button class="btn right" id="next" aria-label="Next">▶</button>
           </div>
+          <div class="dots" id="dots" role="tablist" aria-label="Carousel indicators"></div>
         </div>
-
+        
         <!-- Grid: large features span two columns, small cards occupy one column -->
         <div class="home-grid" id="homeGrid"></div>
 
@@ -144,7 +161,7 @@
 
     <!-- GAMES LIST -->
     <section id="games" data-section style="display:none">
-      <h1 class="section-title">Alle Spiele</h1>
+      <h1 class="section-title">All Games</h1>
       <div class="grid" id="gamesGrid"></div>
     </section>
 
@@ -156,8 +173,8 @@
 
     <!-- ABOUT -->
     <section id="about" data-section style="display:none">
-      <h1 class="section-title">Über Supaku Interactive</h1>
-      <p class="muted">Supaku Interactive ist ein offener Publisher-Hub für Indie-Entwickler. Wir unterstützen kleine Teams mit Sichtbarkeit, Community-Features und einer gemeinsamen Plattform, ohne das Entwickler ihre Einnahmen teilen müssen. Dieses Prototype ist als Pilot gedacht — für mehr Infos kontaktiere uns.</p>
+      <h1 class="section-title">About Supaku Interactive</h1>
+      <p class="muted">Supaku Interactive is an open publisher hub for indie developers. We help small teams with visibility, community features and a shared platform — without taking revenue shares. This prototype is a pilot — contact us for more information.</p>
     </section>
 
     <!-- FOR DEVELOPERS -->
@@ -165,24 +182,24 @@
       <h1 class="section-title">For Developers</h1>
       <div style="display:grid;grid-template-columns:1fr 320px;gap:18px">
         <div>
-          <h3>Was wir bieten</h3>
+          <h3>What we offer</h3>
           <ul class="muted">
-            <li>Kuratiertes Listing & Publisher-Brand</li>
-            <li>Social-Sharing, Newsletter-Einträge, kurze Trailer-Spots</li>
-            <li>Community-Hub (Discord) & Cross-Promotions</li>
-            <li>Niedrige Aufnahme-Hürde im Pilot</li>
+            <li>Curated listings & publisher brand</li>
+            <li>Social sharing, newsletter spots, short trailer promos</li>
+            <li>Community hub (Discord) & cross-promotions</li>
+            <li>Low entry barrier during pilot</li>
           </ul>
 
-          <h3 style="margin-top:14px">Was wir erwarten</h3>
+          <h3 style="margin-top:14px">What we expect</h3>
           <ul class="muted">
-            <li>Funktionierende Demo zum Testen</li>
-            <li>Regelmäßige Dev-Updates (monatlich)</li>
-            <li>Einwilligung, Supaku als Publisher anzugeben</li>
+            <li>Working demo for review</li>
+            <li>Regular dev updates (monthly)</li>
+            <li>Agreement to list Supaku as publisher</li>
           </ul>
         </div>
         <aside style="padding:12px;background:var(--panel);border-radius:12px;border:1px solid rgba(255,255,255,0.03)">
-          <strong>Quick-Overview</strong>
-          <p class="muted" style="font-size:14px">Du behältst 100% Revenue. Wir bieten Sichtbarkeit gegen kleines Marketing-Commitment (z.B. 1 Social Post/Monat).</p>
+          <strong>Quick overview</strong>
+          <p class="muted" style="font-size:14px">You keep 100% revenue. We offer visibility in exchange for a small marketing commitment (e.g. 1 social post / month).</p>
           <a class="cta" href="#">Apply (Google Form)</a>
         </aside>
       </div>
@@ -190,13 +207,14 @@
 
     <!-- GAME DETAIL TEMPLATE -->
     <section id="gameDetail" data-section style="display:none">
-      <a class="cta" id="backToList" style="margin-bottom:12px;display:inline-block">← Zurück</a>
+      <a class="cta" id="backToList" style="margin-bottom:12px;display:inline-block">← Back</a>
       <div class="detail">
         <div>
           <h2 id="g-title">Game Title</h2>
-          <p id="g-desc" class="muted">Kurze Beschreibung des Spiels.</p>
+          <p id="g-desc" class="muted">Short description of the game.</p>
           <div style="margin-top:12px">
-            <a class="cta" id="g-store" href="#">Zur Store-Seite</a>
+            <a class="cta" id="g-store" href="#" target="_blank" rel="noopener">Visit Store</a>
+            <a class="studio-link" id="g-studio-link" href="#">View Studio</a>
           </div>
         </div>
         <div class="gallery">
@@ -209,11 +227,13 @@
 
     <!-- STUDIO DETAIL TEMPLATE -->
     <section id="studioDetail" data-section style="display:none">
-      <a class="cta" id="backToStudios" style="margin-bottom:12px;display:inline-block">← Zurück</a>
+      <a class="cta" id="backToStudios" style="margin-bottom:12px;display:inline-block">← Back</a>
       <div class="detail">
         <div>
           <h2 id="s-name">Studio Name</h2>
-          <p id="s-desc" class="muted">Studio-Beschreibung hier</p>
+          <p id="s-desc" class="muted">Short description here</p>
+          <p id="s-long" class="muted" style="margin-top:8px"></p>
+          <div class="socials" id="s-socials"></div>
         </div>
         <div class="gallery" id="s-games"></div>
       </div>
@@ -227,22 +247,24 @@
 
   <script>
     /**
-     * Bild-Handling:
-     * - Studios liefern 1920×1080 originals in assets/originals/
-     * - Wir erwarten generierte Varianten in assets/large, assets/medium, assets/thumbs
-     * - Der Code baut Pfade automatisch aus `g.cover` (Dateiname oder Pfad)
+     * Changes:
+     * - All UI text switched to English
+     * - Small cards now show Details first, then Store, then Studio
+     * - Dots indicators included (clickable and keyboard friendly)
+     * - Carousel autoplay + reset behaviour unchanged
      */
+
+    const AUTOPLAY_DELAY = 5000; // ms
+    let autoplayTimer = null;
 
     const DATA = {
       games: [
-        { id: 'loafing-town', title: 'Loafing Town', sub: 'Relaxing idle god-sim', desc: 'A relaxing and humorous idle god simulator...', cover: 'cover1.jpg', screenshots: ['ss1.jpg','ss2.jpg'], trailer: '', studio: 'indieark', layout: 'right' },
-        { id: 'wonderia', title: 'Wonderia', sub: 'MANGA style open-world', desc: 'Wonderia is a MANGA style open-world sandbox...', cover: 'cover3.jpg', screenshots: ['ss5.jpg'], trailer: '', studio: 'indieark', layout: 'small' },
-        { id: 'card-cult', title: 'Card Cultivation', sub: 'Card-based cultivation RPG', desc: 'Card cultivation is a card management game...', cover: 'cover2.jpg', screenshots: ['ss3.jpg','ss4.jpg'], trailer: '', studio: 'lotus-studio', layout: 'left' },
-        { id: 'litchi-town', title: 'Litchi Town', sub: 'Cozy farm-craft', desc: 'Enter the Litchi Town, a game that turns rural life...', cover: 'cover4.jpg', screenshots: ['ss6.jpg'], trailer: '', studio: 'lotus-studio', layout: 'small' }
+        { id: 'isoforge', title: 'Isoforge', sub: 'A city builder with tower defense mechanics', desc: 'A city builder the new wa! Combine buildings the right way to get bonuses, watch out for your resources and defend your island...', cover: 'isoforge-c.png', screenshots: ['ss1.jpg','ss2.jpg'], trailer: '', studio: 'maixenstudios', layout: 'right', store: 'https://store.example.com/loafing-town' },
+        { id: 'default-game', title: 'Your Game', sub: 'This could be your game', desc: 'A nice, beautiful game made by you...', cover: 'cover1.jpg', screenshots: ['ss1.jpg','ss2.jpg'], trailer: '', studio: 'default', layout: 'left', store: 'https://store.example.com/loafing-town' },
       ],
       studios: [
-        { id:'indieark', name:'IndieArk', desc:'Small indie team focusing on cozy experiences.' },
-        { id:'lotus-studio', name:'Lotus Studio', desc:'Art-driven JRPG-ish teams.' }
+        { id:'maixenstudios', name:'MaixenStudios', desc:'Small indie studio focusing on creating unique experiences.', long_desc: 'We are a small indie studio founded in 202 by Maixen. After creating a lot of small demos, projects and game jam games we made our first big commercial project: Isoforge', twitter: '', website: '', discord: 'https://discord.gg/zDrCbxwQhD', youtube: 'https://www.youtube.com/@maixenstudios' },
+        { id:'deafult', name:'Your Studios', desc:'This could be your Studio!', long_desc: 'This could be your Studio!.', twitter: '', website: 'https://google.com', youtube: 'https://youtube.com/' }
       ]
     }
 
@@ -253,6 +275,7 @@
       const page = a.dataset.page;
       showSection(page);
       links.forEach(x=>x.classList.toggle('active', x===a));
+      resetAutoplay();
     }))
     function showSection(name){
       document.querySelectorAll('[data-section]').forEach(s=>s.style.display='none');
@@ -266,6 +289,8 @@
     const homeGrid = document.getElementById('homeGrid');
     const gamesGrid = document.getElementById('gamesGrid');
     const studioList = document.getElementById('studioList');
+    const carouselEl = document.getElementById('carousel');
+    const dotsEl = document.getElementById('dots');
 
     // helper: build paths for variants from a cover filename or path
     function pathsFor(file){
@@ -283,17 +308,25 @@
       homeGrid.innerHTML = '';
       gamesGrid.innerHTML = '';
       studioList.innerHTML = '';
+      dotsEl.innerHTML = '';
 
       // Carousel slides (use medium/large with srcset)
       DATA.games.forEach((g, idx)=>{
         const p = pathsFor(g.cover);
         const slide = document.createElement('div'); slide.className='slide fade-in';
+        slide.setAttribute('role','group');
+        slide.setAttribute('aria-roledescription','Slide');
+        slide.setAttribute('aria-label', `${idx+1} of ${DATA.games.length}`);
         slide.innerHTML = `
           <div class="meta">
             <h2>${g.title}</h2>
             <div class="sub">${g.sub}</div>
             <p class="muted">${g.desc}</p>
-            <div style="margin-top:12px"><a class="cta" href="#" data-game="${g.id}">Mehr erfahren</a></div>
+            <div style="margin-top:12px">
+              <a class="cta" href="#" data-game="${g.id}">Details</a>
+              <a class="pill" href="${g.store || '#'}" target="_blank" rel="noopener">Store</a>
+              <a class="studio-link" href="#" data-studio="${g.studio}">Studio</a>
+            </div>
           </div>
           <div class="cover"><img
             src="${p.medium}"
@@ -302,6 +335,16 @@
             loading="lazy" decoding="async" alt="${g.title}"></div>
         `;
         slidesEl.appendChild(slide);
+
+        // create dot for this slide
+        const dot = document.createElement('button');
+        dot.className = 'dot';
+        dot.type = 'button';
+        dot.setAttribute('aria-label', `Slide ${idx+1}`);
+        dot.setAttribute('role','tab');
+        dot.dataset.index = idx;
+        dot.addEventListener('click', (e)=>{ idx = Number(e.currentTarget.dataset.index); updateCarousel(); resetAutoplay(); });
+        dotsEl.appendChild(dot);
       })
 
       // Build home grid: two-column grid where features span both columns
@@ -310,7 +353,7 @@
         const p = pathsFor(g.cover);
         if(g.layout === 'small'){
           const sc = document.createElement('div'); sc.className='small-card fade-in';
-          sc.innerHTML = `<img src="${p.thumb}" loading="lazy" decoding="async" alt="${g.title}"><div class="meta"><strong>${g.title}</strong><div class="muted">${g.sub}</div><div style="margin-top:6px"><a class="pill" href="#" data-game="${g.id}">Details</a></div></div>`;
+          sc.innerHTML = `<img src="${p.thumb}" loading="lazy" decoding="async" alt="${g.title}"><div class="meta"><strong>${g.title}</strong><div class="muted">${g.sub}</div><div style="margin-top:6px"><a class="pill" href="#" data-game="${g.id}">Details</a> <a class="pill" href="${g.store||'#'}" target="_blank">Store</a> <a class="studio-link" href="#" data-studio="${g.studio}">Studio</a></div></div>`;
           homeGrid.appendChild(sc);
           return;
         }
@@ -320,7 +363,7 @@
         const side = g.layout ? g.layout : autoSide;
         if(side === 'right') feature.classList.add('feature--reverse');
         feature.innerHTML = `
-          <div class="meta"><h3>${g.title}</h3><div class="muted">${g.sub}</div><p class="muted" style="margin-top:8px">${g.desc}</p><div style="margin-top:12px"><a class="cta" href="#" data-game="${g.id}">Mehr erfahren</a></div></div>
+          <div class="meta"><h3>${g.title}</h3><div class="muted">${g.sub}</div><p class="muted" style="margin-top:8px">${g.desc}</p><div style="margin-top:12px"><a class="cta" href="#" data-game="${g.id}">Details</a> <a class="pill" href="${g.store||'#'}" target="_blank">Store</a> <a class="studio-link" href="#" data-studio="${g.studio}">Studio</a></div></div>
           <div class="cover"><img src="${p.medium}" srcset="${p.medium} 800w, ${p.large} 1600w" sizes="(max-width:1100px) 100vw, 420px" loading="lazy" decoding="async" alt="${g.title}"></div>
         `;
         homeGrid.appendChild(feature);
@@ -331,24 +374,43 @@
       DATA.games.forEach(g=>{
         const p = pathsFor(g.cover);
         const card = document.createElement('article'); card.className='card fade-in';
-        card.innerHTML = `<img src="${p.medium}" srcset="${p.medium} 800w, ${p.large} 1600w" sizes="(max-width:1100px) 100vw, 420px" loading="lazy" decoding="async" alt="${g.title}"><h3>${g.title}</h3><div class="sub">${g.sub}</div><a class="cta" href="#" data-game="${g.id}">Details</a>`;
+        card.innerHTML = `<img src="${p.medium}" srcset="${p.medium} 800w, ${p.large} 1600w" sizes="(max-width:1100px) 100vw, 420px" loading="lazy" decoding="async" alt="${g.title}"><h3>${g.title}</h3><div class="sub">${g.sub}</div><div style="margin-top:8px"><a class="cta" href="#" data-game="${g.id}">Details</a> <a class="pill" href="${g.store||'#'}" target="_blank">Store</a></div>`;
         gamesGrid.appendChild(card);
       })
 
       // studios
       DATA.studios.forEach(s=>{
         const sc = document.createElement('div'); sc.className='studio-card fade-in';
-        sc.innerHTML = `<h3>${s.name}</h3><p class="muted">${s.desc}</p><div style="margin-top:8px"><a class="pill" href="#" data-studio="${s.id}">Mehr</a></div>`;
+        sc.innerHTML = `<h3>${s.name}</h3><p class="muted">${s.desc}</p><div style="margin-top:8px"><a class="pill" href="#" data-studio="${s.id}">More</a></div>`;
         studioList.appendChild(sc);
       })
 
-      // listeners
-      document.querySelectorAll('[data-game]').forEach(a=>a.addEventListener('click', (e)=>{
-        e.preventDefault(); openGame(a.dataset.game);
-      }))
-      document.querySelectorAll('[data-studio]').forEach(a=>a.addEventListener('click', (e)=>{
-        e.preventDefault(); openStudio(a.dataset.studio);
-      }))
+      attachListeners();
+      updateActiveDot();
+    }
+
+    // listeners are added after render so they always bind to fresh elements
+    function attachListeners(){
+      // game links -> open detail
+      document.querySelectorAll('[data-game]').forEach(a=>{
+        a.addEventListener('click', (e)=>{
+          e.preventDefault(); openGame(a.dataset.game); resetAutoplay();
+        })
+      });
+      // studio links -> open studio
+      document.querySelectorAll('[data-studio]').forEach(a=>{
+        a.addEventListener('click', (e)=>{
+          e.preventDefault(); openStudio(a.dataset.studio); resetAutoplay();
+        })
+      });
+
+      // dots keyboard support: left/right arrows
+      dotsEl.querySelectorAll('.dot').forEach(d=>{
+        d.addEventListener('keydown', (e)=>{
+          if(e.key === 'ArrowLeft') { prevSlide(); resetAutoplay(); d.previousElementSibling?.focus(); }
+          if(e.key === 'ArrowRight') { nextSlide(); resetAutoplay(); d.nextElementSibling?.focus(); }
+        });
+      });
     }
 
     // carousel controls
@@ -356,10 +418,32 @@
     function updateCarousel(){
       const w = document.querySelector('.carousel').clientWidth;
       document.getElementById('slides').style.transform = `translateX(${-idx * w}px)`;
+      updateActiveDot();
     }
-    window.addEventListener('resize', updateCarousel);
-    document.getElementById('prev').addEventListener('click', ()=>{ idx = (idx-1+DATA.games.length)%DATA.games.length; updateCarousel(); });
-    document.getElementById('next').addEventListener('click', ()=>{ idx = (idx+1)%DATA.games.length; updateCarousel(); });
+
+    function updateActiveDot(){
+      const dots = dotsEl.querySelectorAll('.dot');
+      dots.forEach((d,i)=>{
+        const isActive = i === idx;
+        d.setAttribute('aria-current', isActive ? 'true' : 'false');
+        if(isActive) d.classList.add('active'); else d.classList.remove('active');
+      });
+    }
+
+    function nextSlide(){ idx = (idx+1) % DATA.games.length; updateCarousel(); }
+    function prevSlide(){ idx = (idx-1+DATA.games.length) % DATA.games.length; updateCarousel(); }
+
+    document.getElementById('prev').addEventListener('click', ()=>{ prevSlide(); resetAutoplay(); });
+    document.getElementById('next').addEventListener('click', ()=>{ nextSlide(); resetAutoplay(); });
+
+    // autoplay control
+    function startAutoplay(){ stopAutoplay(); autoplayTimer = setInterval(()=>{ nextSlide(); }, AUTOPLAY_DELAY); }
+    function stopAutoplay(){ if(autoplayTimer) clearInterval(autoplayTimer); autoplayTimer = null; }
+    function resetAutoplay(){ stopAutoplay(); startAutoplay(); }
+
+    // pause on hover
+    carouselEl.addEventListener('mouseenter', ()=>{ stopAutoplay(); });
+    carouselEl.addEventListener('mouseleave', ()=>{ startAutoplay(); });
 
     // open detail
     function openGame(id){
@@ -367,32 +451,67 @@
       showSection('gameDetail');
       document.getElementById('g-title').textContent = game.title;
       document.getElementById('g-desc').textContent = game.desc;
+      document.getElementById('g-store').href = game.store || '#';
+      document.getElementById('g-store').target = '_blank';
+      // studio link in game detail
+      const studioObj = DATA.studios.find(s=>s.id === game.studio);
+      if(studioObj){
+        document.getElementById('g-studio-link').textContent = studioObj.name;
+        document.getElementById('g-studio-link').dataset.studio = studioObj.id;
+        document.getElementById('g-studio-link').href = '#';
+      } else {
+        document.getElementById('g-studio-link').textContent = 'Studio';
+        document.getElementById('g-studio-link').removeAttribute('data-studio');
+        document.getElementById('g-studio-link').href = '#';
+      }
+
       const p = pathsFor(game.cover);
       document.getElementById('g-cover').innerHTML = `<img src="${p.large}" srcset="${p.medium} 800w, ${p.large} 1600w" sizes="(max-width:1100px) 100vw, 420px" style="width:100%;height:100%;object-fit:cover;border-radius:8px" loading="lazy" decoding="async" alt="${game.title}">`;
       const ss = document.getElementById('g-screens'); ss.innerHTML='';
       (game.screenshots||[]).forEach(s=>{ const sp = pathsFor(s); const d=document.createElement('div'); d.className='screenshot'; d.innerHTML = `<img src="${sp.medium}" srcset="${sp.medium} 800w, ${sp.large} 1600w" sizes="(max-width:1100px) 100vw, 320px" style="width:100%;height:100%;object-fit:cover;border-radius:8px" loading="lazy" decoding="async" alt="${game.title}">`; ss.appendChild(d); });
-      document.getElementById('g-trailer').innerHTML = game.trailer? `<iframe src="${game.trailer}" frameborder="0" style="width:100%;height:100%"></iframe>` : '<span class="muted" style="padding:14px;display:block">Kein Trailer hinterlegt</span>';
+      document.getElementById('g-trailer').innerHTML = game.trailer? `<iframe src="${game.trailer}" frameborder="0" style="width:100%;height:100%"></iframe>` : '<span class="muted" style="padding:14px;display:block">No trailer available</span>';
+
+      // attach studio link listener inside detail
+      document.getElementById('g-studio-link').addEventListener('click', (e)=>{ e.preventDefault(); const sid = e.currentTarget.dataset.studio; if(sid) openStudio(sid); resetAutoplay(); });
     }
-    document.getElementById('backToList').addEventListener('click', (e)=>{ e.preventDefault(); showSection('home'); });
+
+    document.getElementById('backToList').addEventListener('click', (e)=>{ e.preventDefault(); showSection('home'); resetAutoplay(); });
 
     function openStudio(id){
       const s = DATA.studios.find(x=>x.id===id); if(!s) return;
       showSection('studioDetail');
       document.getElementById('s-name').textContent = s.name;
       document.getElementById('s-desc').textContent = s.desc;
+      document.getElementById('s-long').textContent = s.long_desc || '';
+
+      // socials
+      const soc = document.getElementById('s-socials'); soc.innerHTML = '';
+      ['website','twitter','discord','youtube'].forEach(k=>{
+        if(s[k]){
+          const a = document.createElement('a'); a.className='social-btn'; a.href = s[k]; a.target = '_blank'; a.rel='noopener';
+          a.textContent = k.charAt(0).toUpperCase() + k.slice(1);
+          soc.appendChild(a);
+        }
+      });
+
       const sg = document.getElementById('s-games'); sg.innerHTML='';
       const games = DATA.games.filter(g=>g.studio===id);
       games.forEach(g=>{
         const p = pathsFor(g.cover);
-        const box = document.createElement('div'); box.className='card'; box.style.padding='8px'; box.innerHTML = `<img src="${p.thumb}" style="height:80px;width:100%;object-fit:cover;border-radius:8px" loading="lazy" decoding="async" alt="${g.title}"><h4 style="margin:8px 0 0 0">${g.title}</h4><div class="muted" style="font-size:13px">${g.sub}</div>`;
+        const box = document.createElement('div'); box.className='card'; box.style.padding='8px';
+        box.innerHTML = `<img src="${p.thumb}" style="height:80px;width:100%;object-fit:cover;border-radius:8px" loading="lazy" decoding="async" alt="${g.title}"><h4 style="margin:8px 0 0 0">${g.title}</h4><div class="muted" style="font-size:13px">${g.sub}</div><div style="margin-top:8px"><a class="pill" href="#" data-game="${g.id}">Details</a> <a class="pill" href="${g.store||'#'}" target="_blank">Store</a></div>`;
         sg.appendChild(box);
-      })
+      });
+
+      // attach listeners for the newly created game links on studio page
+      document.querySelectorAll('#studioDetail [data-game]').forEach(a=>a.addEventListener('click',(e)=>{ e.preventDefault(); openGame(a.dataset.game); resetAutoplay(); }));
     }
-    document.getElementById('backToStudios').addEventListener('click', (e)=>{ e.preventDefault(); showSection('studios'); });
+    document.getElementById('backToStudios').addEventListener('click', (e)=>{ e.preventDefault(); showSection('studios'); resetAutoplay(); });
 
     // init
     render();
     setTimeout(updateCarousel,200);
+    startAutoplay();
   </script>
 </body>
 </html>
